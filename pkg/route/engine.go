@@ -53,6 +53,7 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/cloudwego/hertz/internal/bytesconv"
 	"github.com/cloudwego/hertz/internal/bytestr"
@@ -501,6 +502,7 @@ func (engine *Engine) GetServerName() []byte {
 }
 
 func (engine *Engine) Serve(c context.Context, conn network.Conn) (err error) {
+	c = context.WithValue(c, "ServeStart", time.Now())
 	defer func() {
 		errProcess(conn, err)
 	}()
