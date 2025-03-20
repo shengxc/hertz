@@ -817,6 +817,7 @@ func (ctx *RequestContext) Copy() *RequestContext {
 // Next should be used only inside middleware.
 // It executes the pending handlers in the chain inside the calling handler.
 func (ctx *RequestContext) Next(c context.Context) {
+	context.WithValue(c, fmt.Sprintf("MidWare_%v", ctx.index), time.Now())
 	ctx.index++
 	for ctx.index < int8(len(ctx.handlers)) {
 		ctx.handlers[ctx.index](c, ctx)
